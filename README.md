@@ -50,7 +50,7 @@ test "Encode 'ə⚡𝅘𝅥𝅮'" {
 }
 ```
 
-# Get an encoding (https://encoding.spec.whatwg.org/#concept-encoding-get)
+#### Get an encoding (https://encoding.spec.whatwg.org/#concept-encoding-get)
 
 ```zig
 test "Get an encoding" {

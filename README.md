@@ -63,10 +63,59 @@ Also yes this currently duplicates functionality that exists in the standard lib
 
 I plan to implement as much of https://encoding.spec.whatwg.org/ as possible over time.
 
-### Terms defined by the specification
+## Terms defined by the specification
 
-**TODO**: Put these in section order and make examples of each, listing which ones still need to be
-implemented, or which ones do not apply to implementation.
+**TODO**: Sort the rest of these in section order and make examples of each, listing which ones still need to
+be implemented, or which ones do not apply to implementation.
+
+### §3
+
+* convert
+  * dfn for from I/O queue, in §3
+  * dfn for to I/O queue, in §3
+* End-of-queue, in §3
+* I/O queue
+  * definition of, in §3
+* peek, in §3
+* prepend, in §3
+* push, in §3
+* read
+  * dfn for I/O queue, in §3
+
+### §4
+
+* encoding
+  * definition of, in §4
+* label, in §4
+* name, in §4
+
+#### §4.1
+
+* continue, in §4.1
+* decoder
+  * definition of, in §4.1
+* encoder
+  * definition of, in §4.1
+* error, in §4.1
+* error mode
+  * definition of, in §4.1
+* finished, in §4.1
+* handler, in §4.1
+* process an item, in §4.1
+* process a queue, in §4.1
+* processing an item, in §4.1
+* processing a queue, in §4.1
+
+#### §4.2
+
+* get an encoding, in §4.2
+* getting an encoding, in §4.2
+
+#### §4.3
+
+* get an output encoding, in §4.3
+
+### Unsorted
 
 * Big5, in §11
 * Big5 decoder, in §11.1
@@ -75,20 +124,16 @@ implemented, or which ones do not apply to implementation.
 * BOM seen, in §7.1
 * BOM sniff, in §6.1
 * constructor()
-* constructor for TextDecoder, in §7.2
-* constructor for TextDecoderStream, in §7.5
-* constructor for TextEncoder, in §7.4
-* constructor for TextEncoderStream, in §7.6
+  * constructor for TextDecoder, in §7.2
+  * constructor for TextDecoderStream, in §7.5
+  * constructor for TextEncoder, in §7.4
+  * constructor for TextEncoderStream, in §7.6
 * constructor(label)
-* constructor for TextDecoder, in §7.2
-* constructor for TextDecoderStream, in §7.5
+  * constructor for TextDecoder, in §7.2
+  * constructor for TextDecoderStream, in §7.5
 * constructor(label, options)
-* constructor for TextDecoder, in §7.2
-* constructor for TextDecoderStream, in §7.5
-* continue, in §4.1
-* convert
-* dfn for from I/O queue, in §3
-* dfn for to I/O queue, in §3
+  * constructor for TextDecoder, in §7.2
+  * constructor for TextDecoderStream, in §7.5
 * convert code unit to scalar value, in §7.6
 * decode, in §6.1
 * decode(), in §7.2
@@ -96,8 +141,7 @@ implemented, or which ones do not apply to implementation.
 * decode(input), in §7.2
 * decode(input, options), in §7.2
 * decoder
-* definition of, in §4.1
-* dfn for TextDecoderCommon, in §7.1
+  * dfn for TextDecoderCommon, in §7.1
 * do not flush, in §7.2
 * encode, in §6.1
 * encode(), in §7.4
@@ -107,18 +151,13 @@ implemented, or which ones do not apply to implementation.
 * encodeInto(source, destination), in §7.4
 * encode or fail, in §6.1
 * encoder
-* definition of, in §4.1
-* dfn for TextEncoderStream, in §7.6
+  * dfn for TextEncoderStream, in §7.6
 * encoding
-* attribute for TextDecoderCommon, in §7.1
-* attribute for TextEncoderCommon, in §7.3
-* definition of, in §4
-* dfn for TextDecoderCommon, in §7.1
-* End-of-queue, in §3
-* error, in §4.1
+  * attribute for TextDecoderCommon, in §7.1
+  * attribute for TextEncoderCommon, in §7.3
+  * dfn for TextDecoderCommon, in §7.1
 * error mode
-* definition of, in §4.1
-* dfn for TextDecoderCommon, in §7.1
+  * dfn for TextDecoderCommon, in §7.1
 * EUC-JP, in §12
 * EUC-JP decoder, in §12.1
 * EUC-JP encoder, in §12.1.1
@@ -129,9 +168,8 @@ implemented, or which ones do not apply to implementation.
 * EUC-KR encoder, in §13.1.1
 * EUC-KR lead, in §13.1.1
 * fatal
-* attribute for TextDecoderCommon, in §7.1
-* dict-member for TextDecoderOptions, in §7.2
-* finished, in §4.1
+  * attribute for TextDecoderCommon, in §7.1
+  * dict-member for TextDecoderOptions, in §7.2
 * flush and enqueue, in §7.5
 * gb18030, in §10.1.2
 * gb18030 decoder, in §10.2
@@ -143,16 +181,12 @@ implemented, or which ones do not apply to implementation.
 * GBK decoder, in §10.1
 * GBK encoder, in §10.1.1
 * get an encoder, in §6.1
-* get an encoding, in §4.2
-* get an output encoding, in §4.3
 * getting an encoder, in §6.1
-* getting an encoding, in §4.2
-* handler, in §4.1
 * IBM866, in §9
 * ignore BOM, in §7.1
 * ignoreBOM
-* attribute for TextDecoderCommon, in §7.1
-* dict-member for TextDecoderOptions, in §7.2
+  * attribute for TextDecoderCommon, in §7.1
+  * dict-member for TextDecoderOptions, in §7.2
 * index, in §5
 * index Big5, in §5
 * index Big5 pointer, in §5
@@ -169,8 +203,7 @@ implemented, or which ones do not apply to implementation.
 * index Shift_JIS pointer, in §5
 * Index single-byte, in §9
 * I/O queue
-* definition of, in §3
-* dfn for TextDecoderCommon, in §7.1
+  * dfn for TextDecoderCommon, in §7.1
 * is GBK, in §10.2.2
 * ISO-2022-JP, in §12.1.2
 * ISO-2022-JP decoder, in §12.2
@@ -206,20 +239,10 @@ implemented, or which ones do not apply to implementation.
 * is UTF-16BE decoder, in §14.2.1
 * KOI8-R, in §9
 * KOI8-U, in §9
-* label, in §4
 * macintosh, in §9
-* name, in §4
-* peek, in §3
 * pending high surrogate, in §7.6
-* prepend, in §3
-* process an item, in §4.1
-* process a queue, in §4.1
-* processing an item, in §4.1
-* processing a queue, in §4.1
-* push, in §3
 * read
-* dfn for I/O queue, in §3
-* dict-member for TextEncoderEncodeIntoResult, in §7.4
+  * dict-member for TextEncoderEncodeIntoResult, in §7.4
 * replacement, in §14
 * replacement decoder, in §14.1
 * replacement error returned, in §14.1.1

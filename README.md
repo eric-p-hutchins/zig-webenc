@@ -3,9 +3,11 @@ zig-webenc
 
 An implementation of https://encoding.spec.whatwg.org/ for the Zig programming language.
 
-**Note**: I do not actually have anything hooked up that allows you to use `@import("webenc")` yet (maybe this works with Gyro or Zigmod somehow but I'm not sure because I've never tried them).
+**Note**: I do not actually have anything hooked up that allows you to use `@import("webenc")` yet (maybe this
+works with Gyro or Zigmod somehow but I'm not sure because I've never tried them).
 
-Using the `TextEncoder` interface which is specified in the "Encoding" Living Standard [here](https://encoding.spec.whatwg.org/#interface-textencoder).
+Using the `TextEncoder` interface which is specified in the "Encoding" Living Standard
+[here](https://encoding.spec.whatwg.org/#interface-textencoder).
 
 ```zig
 pub const webenc = @import("webenc");
@@ -50,260 +52,422 @@ test "Encode 'ə⚡𝅘𝅥𝅮'" {
 }
 ```
 
-#### Get an encoding (https://encoding.spec.whatwg.org/#concept-encoding-get)
-
-```zig
-test "Get an encoding" {
-    try expectEqual(Encoding.Utf8, try getEncoding("utf-8"));
-}
-```
-
 Also yes this currently duplicates functionality that exists in the standard library at
 [std.unicode](https://github.com/ziglang/zig/blob/master/lib/std/unicode.zig) but this is only a start.
 
 I plan to implement as much of https://encoding.spec.whatwg.org/ as possible over time.
 
-## Terms defined by the specification
+## [Terms defined by the specification](https://encoding.spec.whatwg.org/#index-defined-here)
 
-**TODO**: Sort the rest of these in section order and make examples of each, listing which ones still need to
-be implemented, or which ones do not apply to implementation.
+**TODO**: Add examples of each one, listing which ones still need to be implemented, or which ones do not
+apply to implementation (or maybe just delete those ones).
 
-### §3
+### [§3 Terminology](https://encoding.spec.whatwg.org/#terminology)
 
 * convert
-  * dfn for from I/O queue, in §3
-  * dfn for to I/O queue, in §3
-* End-of-queue, in §3
+  * dfn for from I/O queue
+  * dfn for to I/O queue
+* End-of-queue
 * I/O queue
-  * definition of, in §3
-* peek, in §3
-* prepend, in §3
-* push, in §3
+  * definition of
+* peek
+* prepend
+* push
 * read
-  * dfn for I/O queue, in §3
+  * dfn for I/O queue
 
-### §4
+### [§4 Encodings](https://encoding.spec.whatwg.org/#encodings)
 
 * encoding
-  * definition of, in §4
-* label, in §4
-* name, in §4
+  * definition of
+* label
+* name
 
-#### §4.1
+#### [§4.1 Encoders and decoders](https://encoding.spec.whatwg.org/#encoders-and-decoders)
 
-* continue, in §4.1
+* continue
 * decoder
-  * definition of, in §4.1
+  * definition of
 * encoder
-  * definition of, in §4.1
-* error, in §4.1
+  * definition of
+* error
 * error mode
-  * definition of, in §4.1
-* finished, in §4.1
-* handler, in §4.1
-* process an item, in §4.1
-* process a queue, in §4.1
-* processing an item, in §4.1
-* processing a queue, in §4.1
+  * definition of
+* finished
+* handler
+* process an item
+* process a queue
+* processing an item
+* processing a queue
 
-#### §4.2
+#### [§4.2 Names and labels](https://encoding.spec.whatwg.org/#names-and-labels)
 
-* get an encoding, in §4.2
-* getting an encoding, in §4.2
+* [get an encoding/getting an encoding](https://encoding.spec.whatwg.org/#concept-encoding-get)
 
-#### §4.3
+```zig
+pub const webenc = @import("webenc");
+pub const Encoding = webenc.Encoding;
+pub const getEncoding = webenc.getEncoding;
 
-* get an output encoding, in §4.3
+test "Get an encoding" {
+    try expectEqual(Encoding.Utf8, try getEncoding("utf-8"));
+}
+```
 
-### Unsorted
+**TODO**: Implement this for all encodings. Currently, it _only_ works for `utf-8`. Also it is sensitive to
+leading/trailing space and case-sensitive, which is not consistent with the spec.
 
-* Big5, in §11
-* Big5 decoder, in §11.1
-* Big5 encoder, in §11.1.1
-* Big5 lead, in §11.1.1
-* BOM seen, in §7.1
-* BOM sniff, in §6.1
-* constructor()
-  * constructor for TextDecoder, in §7.2
-  * constructor for TextDecoderStream, in §7.5
-  * constructor for TextEncoder, in §7.4
-  * constructor for TextEncoderStream, in §7.6
-* constructor(label)
-  * constructor for TextDecoder, in §7.2
-  * constructor for TextDecoderStream, in §7.5
-* constructor(label, options)
-  * constructor for TextDecoder, in §7.2
-  * constructor for TextDecoderStream, in §7.5
-* convert code unit to scalar value, in §7.6
-* decode, in §6.1
-* decode(), in §7.2
-* decode and enqueue a chunk, in §7.5
-* decode(input), in §7.2
-* decode(input, options), in §7.2
+#### [§4.3 Output encodings](https://encoding.spec.whatwg.org/#output-encodings)
+
+* get an output encoding
+
+### [§5 Indexes](https://encoding.spec.whatwg.org/#indexes)
+
+* index
+* index Big5
+* index Big5 pointer
+* index code point
+* index EUC-KR
+* index gb18030
+* index gb18030 ranges
+* index gb18030 ranges code point
+* index gb18030 ranges pointer
+* index ISO-2022-JP katakana
+* index jis0208
+* index jis0212
+* index pointer
+* index Shift_JIS pointer
+
+### [§6 Hooks for standards](https://encoding.spec.whatwg.org/#specification-hooks)
+
+* UTF-8 decode
+* UTF-8 decode without BOM
+* UTF-8 decode without BOM or fail
+* UTF-8 encode
+
+#### [§6.1 Legacy hooks for standards](https://encoding.spec.whatwg.org/#legacy-hooks)
+
+* BOM sniff
+* decode
+* encode
+* encode or fail
+* get an encoder
+* getting an encoder
+
+### [§7 API](https://encoding.spec.whatwg.org/#api)
+
+#### [§7.1 Interface mixin TextDecoderCommon](https://encoding.spec.whatwg.org/#interface-mixin-textdecodercommon)
+
+* BOM seen
 * decoder
-  * dfn for TextDecoderCommon, in §7.1
-* do not flush, in §7.2
-* encode, in §6.1
-* encode(), in §7.4
-* encode and enqueue a chunk, in §7.6
-* encode and flush, in §7.6
-* encode(input), in §7.4
-* encodeInto(source, destination), in §7.4
-* encode or fail, in §6.1
-* encoder
-  * dfn for TextEncoderStream, in §7.6
+  * dfn for TextDecoderCommon
 * encoding
-  * attribute for TextDecoderCommon, in §7.1
-  * attribute for TextEncoderCommon, in §7.3
-  * dfn for TextDecoderCommon, in §7.1
+  * attribute for TextDecoderCommon
+  * dfn for TextDecoderCommon
 * error mode
-  * dfn for TextDecoderCommon, in §7.1
-* EUC-JP, in §12
-* EUC-JP decoder, in §12.1
-* EUC-JP encoder, in §12.1.1
-* EUC-JP jis0212, in §12.1.1
-* EUC-JP lead, in §12.1.1
-* EUC-KR, in §13
-* EUC-KR decoder, in §13.1
-* EUC-KR encoder, in §13.1.1
-* EUC-KR lead, in §13.1.1
+  * dfn for TextDecoderCommon
 * fatal
-  * attribute for TextDecoderCommon, in §7.1
-  * dict-member for TextDecoderOptions, in §7.2
-* flush and enqueue, in §7.5
-* gb18030, in §10.1.2
-* gb18030 decoder, in §10.2
-* gb18030 encoder, in §10.2.1
-* gb18030 first, in §10.2.1
-* gb18030 second, in §10.2.1
-* gb18030 third, in §10.2.1
-* GBK, in §10
-* GBK decoder, in §10.1
-* GBK encoder, in §10.1.1
-* get an encoder, in §6.1
-* getting an encoder, in §6.1
-* IBM866, in §9
-* ignore BOM, in §7.1
+  * attribute for TextDecoderCommon
+* ignore BOM
 * ignoreBOM
-  * attribute for TextDecoderCommon, in §7.1
-  * dict-member for TextDecoderOptions, in §7.2
-* index, in §5
-* index Big5, in §5
-* index Big5 pointer, in §5
-* index code point, in §5
-* index EUC-KR, in §5
-* index gb18030, in §5
-* index gb18030 ranges, in §5
-* index gb18030 ranges code point, in §5
-* index gb18030 ranges pointer, in §5
-* index ISO-2022-JP katakana, in §5
-* index jis0208, in §5
-* index jis0212, in §5
-* index pointer, in §5
-* index Shift_JIS pointer, in §5
-* Index single-byte, in §9
+  * attribute for TextDecoderCommon
 * I/O queue
-  * dfn for TextDecoderCommon, in §7.1
-* is GBK, in §10.2.2
-* ISO-2022-JP, in §12.1.2
-* ISO-2022-JP decoder, in §12.2
-* ISO-2022-JP decoder ASCII, in §12.2.1
-* ISO-2022-JP decoder escape, in §12.2.1
-* ISO-2022-JP decoder escape start, in §12.2.1
-* ISO-2022-JP decoder katakana, in §12.2.1
-* ISO-2022-JP decoder lead byte, in §12.2.1
-* ISO-2022-JP decoder output state, in §12.2.1
-* ISO-2022-JP decoder Roman, in §12.2.1
-* ISO-2022-JP decoder state, in §12.2.1
-* ISO-2022-JP decoder trail byte, in §12.2.1
-* ISO-2022-JP encoder, in §12.2.1
-* ISO-2022-JP encoder ASCII, in §12.2.2
-* ISO-2022-JP encoder jis0208, in §12.2.2
-* ISO-2022-JP encoder Roman, in §12.2.2
-* ISO-2022-JP encoder state, in §12.2.2
-* ISO-2022-JP lead, in §12.2.1
-* ISO-2022-JP output, in §12.2.1
-* ISO-8859-10, in §9
-* ISO-8859-13, in §9
-* ISO-8859-14, in §9
-* ISO-8859-15, in §9
-* ISO-8859-16, in §9
-* ISO-8859-2, in §9
-* ISO-8859-3, in §9
-* ISO-8859-4, in §9
-* ISO-8859-5, in §9
-* ISO-8859-6, in §9
-* ISO-8859-7, in §9
-* ISO-8859-8, in §9
-* ISO-8859-8-I, in §9
-* is UTF-16BE decoder, in §14.2.1
-* KOI8-R, in §9
-* KOI8-U, in §9
-* macintosh, in §9
-* pending high surrogate, in §7.6
+  * dfn for TextDecoderCommon
+* serialize I/O queue
+* TextDecoderCommon
+
+#### [§7.2 Interface TextDecoder](https://encoding.spec.whatwg.org/#interface-textdecoder)
+
+* constructor()
+  * constructor for TextDecoder
+* constructor(label)
+  * constructor for TextDecoder
+* constructor(label, options)
+  * constructor for TextDecoder
+* decode()
+* decode(input)
+* decode(input, options)
+* do not flush
+* fatal
+  * dict-member for TextDecoderOptions
+* ignoreBOM
+  * dict-member for TextDecoderOptions
+* stream
+* TextDecodeOptions
+* TextDecoder
+* TextDecoder()
+* TextDecoder(label)
+* TextDecoder(label, options)
+* TextDecoderOptions
+
+#### [§7.3 Interface mixin TextEncoderCommon](https://encoding.spec.whatwg.org/#interface-mixin-textencodercommon)
+
+* encoding
+  * attribute for TextEncoderCommon
+* TextEncoderCommon
+
+#### [§7.4 Interface TextEncoder](https://encoding.spec.whatwg.org/#interface-textencoder)
+
+* constructor()
+  * constructor for TextEncoder
+* encode()
+* encode(input)
+* encodeInto(source, destination)
 * read
-  * dict-member for TextEncoderEncodeIntoResult, in §7.4
-* replacement, in §14
-* replacement decoder, in §14.1
-* replacement error returned, in §14.1.1
-* serialize I/O queue, in §7.1
-* shared UTF-16 decoder, in §14.2
-* Shift_JIS, in §12.2.2
-* Shift_JIS decoder, in §12.3
-* Shift_JIS encoder, in §12.3.1
-* Shift_JIS lead, in §12.3.1
-* single-byte decoder, in §9
-* single-byte encoder, in §9.1
-* single-byte encoding, in §9
-* stream, in §7.2
-* TextDecodeOptions, in §7.2
-* TextDecoder, in §7.2
-* TextDecoder(), in §7.2
-* TextDecoderCommon, in §7.1
-* TextDecoder(label), in §7.2
-* TextDecoder(label, options), in §7.2
-* TextDecoderOptions, in §7.2
-* TextDecoderStream, in §7.5
-* TextDecoderStream(), in §7.5
-* TextDecoderStream(label), in §7.5
-* TextDecoderStream(label, options), in §7.5
-* TextEncoder, in §7.4
-* TextEncoder(), in §7.4
-* TextEncoderCommon, in §7.3
-* TextEncoderEncodeIntoResult, in §7.4
-* TextEncoderStream, in §7.6
-* TextEncoderStream(), in §7.6
-* UTF-16BE, in §14.2.1
-* UTF-16BE decoder, in §14.3
-* UTF-16BE/LE, in §14.2
-* UTF-16LE, in §14.3.1
-* UTF-16 lead byte, in §14.2.1
-* UTF-16 lead surrogate, in §14.2.1
-* UTF-16LE decoder, in §14.4
-* UTF-8, in §8
-* UTF-8 bytes needed, in §8.1.1
-* UTF-8 bytes seen, in §8.1.1
-* UTF-8 code point, in §8.1.1
-* UTF-8 decode, in §6
-* UTF-8 decoder, in §8.1
-* UTF-8 decode without BOM, in §6
-* UTF-8 decode without BOM or fail, in §6
-* UTF-8 encode, in §6
-* UTF-8 encoder, in §8.1.1
-* UTF-8 lower boundary, in §8.1.1
-* UTF-8 upper boundary, in §8.1.1
-* windows-1250, in §9
-* windows-1251, in §9
-* windows-1252, in §9
-* windows-1253, in §9
-* windows-1254, in §9
-* windows-1255, in §9
-* windows-1256, in §9
-* windows-1257, in §9
-* windows-1258, in §9
-* windows-874, in §9
-* written, in §7.4
-* x-mac-cyrillic, in §9
-* x-user-defined, in §14.4.1
-* x-user-defined decoder, in §14.5
-* x-user-defined encoder, in §14.5.1
+  * dict-member for TextEncoderEncodeIntoResult
+* TextEncoder
+* TextEncoder()
+* TextEncoderEncodeIntoResult
+* written
+
+#### [§7.5 Interface TextDecoderStream](https://encoding.spec.whatwg.org/#interface-textdecoderstream)
+
+* constructor()
+  * constructor for TextDecoderStream
+* constructor(label)
+  * constructor for TextDecoderStream
+* constructor(label, options)
+  * constructor for TextDecoderStream
+* decode and enqueue a chunk
+* flush and enqueue
+* TextDecoderStream
+* TextDecoderStream()
+* TextDecoderStream(label)
+* TextDecoderStream(label, options)
+
+#### [§7.6 Interface TextEncoderStream](https://encoding.spec.whatwg.org/#interface-textencoderstream)
+
+* constructor()
+  * constructor for TextEncoderStream
+* convert code unit to scalar value
+* encode and enqueue a chunk
+* encode and flush
+* encoder
+  * dfn for TextEncoderStream
+* pending high surrogate
+* TextEncoderStream
+* TextEncoderStream()
+
+### [§8 The encoding](https://encoding.spec.whatwg.org/#the-encoding)
+
+* UTF-8
+
+#### [§8.1 UTF-8](https://encoding.spec.whatwg.org/#utf-8)
+
+* UTF-8 decoder
+
+#### [§8.1.1 UTF-8 decoder](https://encoding.spec.whatwg.org/#utf-8-decoder)
+
+* UTF-8 bytes needed
+* UTF-8 bytes seen
+* UTF-8 code point
+* UTF-8 lower boundary
+* UTF-8 upper boundary
+
+#### [§8.1.2 UTF-8 encoder](https://encoding.spec.whatwg.org/#utf-8-encoder)
+
+* UTF-8 encoder
+
+### [§9 Legacy single-byte encodings](https://encoding.spec.whatwg.org/#legacy-single-byte-encodings)
+
+* IBM866
+* Index single-byte
+* ISO-8859-10
+* ISO-8859-13
+* ISO-8859-14
+* ISO-8859-15
+* ISO-8859-16
+* ISO-8859-2
+* ISO-8859-3
+* ISO-8859-4
+* ISO-8859-5
+* ISO-8859-6
+* ISO-8859-7
+* ISO-8859-8
+* ISO-8859-8-I
+* KOI8-R
+* KOI8-U
+* macintosh
+* single-byte encoding
+* windows-1250
+* windows-1251
+* windows-1252
+* windows-1253
+* windows-1254
+* windows-1255
+* windows-1256
+* windows-1257
+* windows-1258
+* windows-874
+* x-mac-cyrillic
+
+#### [§9.1 single-byte decoder](https://encoding.spec.whatwg.org/#single-byte-decoder)
+
+* single-byte decoder
+
+#### [§9.2 single-byte encoder](https://encoding.spec.whatwg.org/#single-byte-encoder)
+
+* single-byte encoder
+
+### [§10 Legacy multi-byte Chinese (simplified) encodings](https://encoding.spec.whatwg.org/#legacy-multi-byte-chinese-(simplified)-encodings)
+
+* GBK
+
+#### [§10.1.1 GBK decoder](https://encoding.spec.whatwg.org/#gbk-decoder)
+
+* GBK decoder
+
+#### [§10.1.2 GBK encoder](https://encoding.spec.whatwg.org/#gbk-encoder)
+
+* GBK encoder
+
+#### [§10.2 gb18030](https://encoding.spec.whatwg.org/#gb18030)
+
+* gb18030
+
+#### [§10.2.1 gb18030 decoder](https://encoding.spec.whatwg.org/#gb18030-decoder)
+
+* gb18030 decoder
+* gb18030 first
+* gb18030 second
+* gb18030 third
+
+#### [§10.2.2 gb18030 encoder](https://encoding.spec.whatwg.org/#gb18030-encoder)
+
+* gb18030 encoder
+* is GBK
+
+### [§11 Legacy multi-byte Chinese (traditional) encodings](https://encoding.spec.whatwg.org/#legacy-multi-byte-chinese-(traditional)-encodings)
+
+#### [§11.1 Big5](https://encoding.spec.whatwg.org/#big5)
+
+* Big5
+
+#### [§11.1.1 Big5 decoder](https://encoding.spec.whatwg.org/#big5-decoder)
+
+* Big5 decoder
+* Big5 lead
+
+#### [§11.1.2 Big5 encoder](https://encoding.spec.whatwg.org/#big5-encoder)
+
+* Big5 encoder
+
+### [§12 Legacy multi-byte Japanese encodings](https://encoding.spec.whatwg.org/#legacy-multi-byte-japanese-encodings)
+
+#### [§12.1 EUC-JP](https://encoding.spec.whatwg.org/#euc-jp)
+
+* EUC-JP
+
+#### [§12.1.1 EUC-JP decoder](https://encoding.spec.whatwg.org/#euc-jp-decoder)
+
+* EUC-JP decoder
+* EUC-JP jis0212
+* EUC-JP lead
+
+#### [§12.1.2 EUC-JP encoder](https://encoding.spec.whatwg.org/#euc-jp-encoder)
+
+* EUC-JP encoder
+
+#### [§12.2 ISO-2022-JP](https://encoding.spec.whatwg.org/#iso-2022-jp)
+
+* ISO-2022-JP
+
+#### [§12.2.1 ISO-2022-JP decoder](https://encoding.spec.whatwg.org/#iso-2022-jp-decoder)
+
+* ISO-2022-JP decoder
+* ISO-2022-JP decoder ASCII
+* ISO-2022-JP decoder escape
+* ISO-2022-JP decoder escape start
+* ISO-2022-JP decoder katakana
+* ISO-2022-JP decoder lead byte
+* ISO-2022-JP decoder output state
+* ISO-2022-JP decoder Roman
+* ISO-2022-JP decoder state
+* ISO-2022-JP decoder trail byte
+* ISO-2022-JP lead
+* ISO-2022-JP output
+
+#### [§12.2.2 ISO-2022-JP encoder](https://encoding.spec.whatwg.org/#iso-2022-jp-encoder)
+
+* ISO-2022-JP encoder
+* ISO-2022-JP encoder ASCII
+* ISO-2022-JP encoder jis0208
+* ISO-2022-JP encoder Roman
+* ISO-2022-JP encoder state
+
+#### [§12.3 Shift_JIS](https://encoding.spec.whatwg.org/#shift_jis)
+
+* Shift_JIS
+
+#### [§12.3.1 Shift_JIS decoder](https://encoding.spec.whatwg.org/#shift_jis-decoder)
+
+* Shift_JIS decoder
+* Shift_JIS lead
+
+#### [§12.3.2 Shift_JIS encoder](https://encoding.spec.whatwg.org/#shift_jis-encoder)
+
+* Shift_JIS encoder
+
+### [§13 Legacy multi-byte Korean encodings](https://encoding.spec.whatwg.org/#legacy-multi-byte-korean-encodings)
+
+#### [§13.1 EUC-KR](https://encoding.spec.whatwg.org/#euc-kr)
+
+* EUC-KR
+
+#### [§13.1.1 EUC-KR decoder](https://encoding.spec.whatwg.org/#euc-kr-decoder)
+
+* EUC-KR decoder
+* EUC-KR lead
+
+#### [§13.1.2 EUC-KR encoder](https://encoding.spec.whatwg.org/#euc-kr-encoder)
+
+* EUC-KR encoder
+
+### [§14 Legacy miscellaneous encodings](https://encoding.spec.whatwg.org/#legacy-miscellaneous-encodings)
+
+#### [§14.1 replacement](https://encoding.spec.whatwg.org/#replacement)
+
+* replacement
+
+#### [§14.1.1 replacement decoder](https://encoding.spec.whatwg.org/#replacement-decoder)
+
+* replacement decoder
+* replacement error returned
+
+#### [§14.2 Common infrastructure for UTF-16BE/LE](https://encoding.spec.whatwg.org/#common-infrastructure-for-utf-16be-and-utf-16le)
+
+* UTF-16BE/LE
+
+#### [§14.2.1 shared UTF-16 decoder](https://encoding.spec.whatwg.org/#shared-utf-16-decoder)
+
+* shared UTF-16 decoder
+* is UTF-16BE decoder
+* UTF-16BE
+* UTF-16 lead byte
+* UTF-16 lead surrogate
+
+#### [§14.3 UTF-16BE](https://encoding.spec.whatwg.org/#utf-16be)
+
+#### [§14.3.1 UTF-16BE decoder](https://encoding.spec.whatwg.org/#utf-16be-decoder)
+
+* UTF-16BE decoder
+
+#### [§14.4 UTF-16LE](https://encoding.spec.whatwg.org/#utf-16le)
+
+* UTF-16LE
+
+#### [§14.4.1 UTF-16LE decoder](https://encoding.spec.whatwg.org/#utf-16le-decoder)
+
+* UTF-16LE decoder
+
+#### [§14.5 x-user-defined](https://encoding.spec.whatwg.org/#x-user-defined)
+
+* x-user-defined
+
+#### [§14.5.1 x-user-defined decoder](https://encoding.spec.whatwg.org/#x-user-defined-decoder)
+
+* x-user-defined decoder
+
+#### [§14.5.2 x-user-defined encoder](https://encoding.spec.whatwg.org/#x-user-defined-encoder)
+
+* x-user-defined encoder

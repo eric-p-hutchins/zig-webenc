@@ -114,3 +114,21 @@ test "Encode 'Hello, World!' to UTF-8" {
 
     try expect(std.mem.eql(u8, "Hello, World!", encoded));
 }
+
+test "Encode 'ə⚡𝅘𝅥𝅮'" {
+    // U+0259 2 UTF-8 characters LATIN SMALL LETTER SCHWA
+    // U+26A1 3 UTF-8 characters HIGH VOLTAGE SIGN
+    // U+1D160 4 UTF-8 characters MUSICAL SYMBOL EIGHTH NOTE
+    var encoder = try TextEncoder.init(testing.allocator, .{});
+    defer encoder.deinit();
+
+    try expectEqual(Encoding.Utf8, encoder.encoding);
+
+    var schwa_lightning_note_str = [_]u21{ 0x0259, 0x26A1, 0x1D160 };
+    const schwa_lightning_note_slice: []u21 = &schwa_lightning_note_str;
+
+    const encoded = try encoder.encode(schwa_lightning_note_slice);
+    defer testing.allocator.free(encoded);
+
+    try expect(std.mem.eql(u8, "ə⚡𝅘𝅥𝅮", encoded));
+}

@@ -50,6 +50,14 @@ test "Encode 'ə⚡𝅘𝅥𝅮'" {
 }
 ```
 
+# Get an encoding (https://encoding.spec.whatwg.org/#concept-encoding-get)
+
+```zig
+test "Get an encoding" {
+    try expectEqual(Encoding.Utf8, try getEncoding("utf-8"));
+}
+```
+
 Also yes this currently duplicates functionality that exists in the standard library at [std.unicode](https://github.com/ziglang/zig/blob/master/lib/std/unicode.zig) but this is only a start.
 
 I plan to implement as much of https://encoding.spec.whatwg.org/ as possible over time.

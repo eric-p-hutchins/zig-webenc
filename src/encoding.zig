@@ -1,4 +1,6 @@
 const std = @import("std");
+const testing = std.testing;
+const expectEqual = testing.expectEqual;
 const Allocator = std.mem.Allocator;
 
 const EncoderHandler = @import("encode.zig").EncoderHandler;
@@ -50,9 +52,10 @@ pub const Encoding = enum {
 
 const Utf8EncoderHandler = @import("encoding/utf8.zig").Utf8EncoderHandler;
 
-pub fn getEncoding(label: []const u8) ?Encoding {
+// https://encoding.spec.whatwg.org/#concept-encoding-get
+pub fn getEncoding(label: []const u8) !Encoding {
     if (std.mem.eql(u8, "utf-8", label)) return .Utf8;
-    return null;
+    return error.EncodingNotFound;
 }
 
 pub fn getEncoderHandler(allocator: *Allocator, encoding: Encoding) !*EncoderHandler {
@@ -65,4 +68,8 @@ pub fn getEncoderHandler(allocator: *Allocator, encoding: Encoding) !*EncoderHan
             return WebEncError.RangeError;
         },
     }
+}
+
+test "Get an encoding" {
+    try expectEqual(Encoding.Utf8, try getEncoding("utf-8"));
 }

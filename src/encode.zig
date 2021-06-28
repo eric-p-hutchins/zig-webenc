@@ -47,15 +47,15 @@ pub const TextEncoder = struct {
     handler: *EncoderHandler,
 
     pub fn init(allocator: *Allocator, options: TextEncodeOptions) !TextEncoder {
-        var encoding = getEncoding(options.encoding);
-        if (encoding == null or encoding.? == Encoding.Replacement) {
+        var encoding = try getEncoding(options.encoding);
+        if (encoding == Encoding.Replacement) {
             return WebEncError.RangeError;
         }
-        var handler: *EncoderHandler = try getEncoderHandler(allocator, encoding.?);
+        var handler: *EncoderHandler = try getEncoderHandler(allocator, encoding);
         return TextEncoder{
             .allocator = allocator,
             .options = options,
-            .encoding = encoding.?,
+            .encoding = encoding,
             .handler = handler,
             .error_mode = if (options.fatal) .Fatal else .Replacement,
         };
